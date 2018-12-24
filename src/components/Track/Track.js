@@ -9,11 +9,12 @@ class Track extends React.Component {
     }
   }
   render(){
+    const track = this.props.track;
     return (
       <div className="Track">
         <div className="Track-information">
-          <h3>{this.props.title}</h3>
-          <p>{this.props.artist} | {this.props.album}</p>
+          <h3>{track.name}</h3>
+          <p>{track.artist} | {track.album}</p>
         </div>
         <a className="Track-action">{this.state.action}</a>
       </div>

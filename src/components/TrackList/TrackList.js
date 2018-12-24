@@ -9,7 +9,11 @@ class TrackList extends React.Component {
   render(){
     return(
       <div className="TrackList">
-        <Track title="Tiny Dancer" artist="Ben Folds" album="Ben Folds Live" />
+        {
+          this.props.tracks.map(track => {
+            return <Track key={track.id} track={track} />
+          })
+        }
       </div>
     )
   }
