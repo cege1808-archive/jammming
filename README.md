@@ -1,4 +1,4 @@
-Jammming
+# Jammming
 
 Creating spotify playlist quickly with spotify API and react.
 
