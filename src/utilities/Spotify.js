@@ -33,9 +33,7 @@ const Spotify = {
     }).then(response => {
       return response.json();
     }).then(jsonResponse => {
-      //console.log(jsonResponse);
       return jsonResponse.tracks.items.map(track => {
-        //console.log(track);
         return {
           id: track.id,
           name: track.name,
@@ -43,6 +41,47 @@ const Spotify = {
           album: track.album.name,
           uri: track.uri
         }
+      })
+    })
+  },
+  savePlaylist: (playlistName, trackURIs) => {
+    if(playlistName === '' && trackURIs.length < 1){
+      console.log('Error: Empty Playlist or No Name');
+      return;
+    }
+    Spotify.getAccessToken();
+
+    fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    }).then(response => {
+      return response.json();
+    }).then(jsonResponse => {
+      let user_id = jsonResponse.id;
+
+      return fetch(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${access_token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: playlistName})
+
+      }).then(response => {
+        return response.json();
+      }).then(jsonResponse => {
+        let playlist_id = jsonResponse.id;
+
+        return fetch(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({uris: trackURIs})
+        });
+
       })
     })
   }
